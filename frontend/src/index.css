@@ -2,6 +2,7 @@
   --bg: #12181c;
   --panel: #1a2229;
   --panel-raised: #212b33;
+  --sidebar-bg: #0e1317;
   --line: #303c44;
   --ink: #e9e3d6;
   --ink-dim: #9fa9ac;
@@ -28,10 +29,137 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ---------- App shell: sidebar + main area ---------- */
+
+.app-shell {
+  height: 100%;
+  display: flex;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.15s ease;
+}
+
+.sidebar.collapsed {
+  width: 52px;
+}
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+}
+
+.sidebar-toggle {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sidebar-toggle:hover {
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.new-chat-btn {
+  flex: 1;
+  background: var(--panel-raised);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.new-chat-btn:hover {
+  border-color: var(--gold);
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 9px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--ink-dim);
+}
+
+.history-item:hover {
+  background: var(--panel);
+  color: var(--ink);
+}
+
+.history-item.active {
+  background: var(--panel-raised);
+  color: var(--ink);
+  border-left: 2px solid var(--gold);
+}
+
+.history-title {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-delete {
+  background: transparent;
+  border: none;
+  color: var(--ink-dim);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  flex-shrink: 0;
+  padding: 2px 4px;
+}
+
+.history-item:hover .history-delete {
+  opacity: 1;
+}
+
+.history-delete:hover {
+  color: #d98c6a;
+}
+
+.main-area {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 /* ---------- Landing view (empty state, Claude-style centered input) ---------- */
 
 .landing {
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -289,6 +417,22 @@ body {
 .starter-chip:hover {
   border-color: var(--gold);
   color: var(--ink);
+}
+
+/* ---------- Responsive: collapse sidebar automatically on small screens ---------- */
+
+@media (max-width: 720px) {
+  .sidebar {
+    position: fixed;
+    z-index: 10;
+    height: 100%;
+  }
+
+  .sidebar.collapsed {
+    width: 0;
+    border-right: none;
+    overflow: hidden;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
