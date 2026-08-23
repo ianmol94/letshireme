@@ -223,6 +223,32 @@ body {
   background: var(--panel);
 }
 
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  background: transparent;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.below-composer {
+  margin-top: 12px;
+}
+
 .chat-header .eyebrow {
   margin: 0;
   font-size: 10.5px;

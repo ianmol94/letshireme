@@ -20,6 +20,35 @@ function Seal({ size = 30 }) {
   )
 }
 
+function DownloadIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5M4 15h12"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function DownloadResumeButton({ className }) {
+  return (
+    <a
+      href={`${API_URL}/resume`}
+      className={className}
+      target="_blank"
+      rel="noopener noreferrer"
+      download
+    >
+      <DownloadIcon />
+      Download resume
+    </a>
+  )
+}
+
 function newConversation() {
   return {
     id: crypto.randomUUID(),
@@ -208,6 +237,8 @@ export default function App() {
 
             <div className="landing-composer">{composer}</div>
 
+            <DownloadResumeButton className="download-btn below-composer" />
+
             <div className="starters">
               {STARTER_PROMPTS.map((p) => (
                 <button key={p} className="starter-chip" onClick={() => sendMessage(p)}>
@@ -253,6 +284,7 @@ export default function App() {
 
             <div className="composer-dock">
               <div className="composer-inner">{composer}</div>
+              <DownloadResumeButton className="download-btn below-composer" />
               <p className="foot-note">Answers are generated from a resume on file — verify specifics in an interview.</p>
             </div>
           </div>
