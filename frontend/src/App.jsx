@@ -44,7 +44,7 @@ function DownloadResumeButton({ className }) {
       download
     >
       <DownloadIcon />
-      Download resume
+      Download My Resume
     </a>
   )
 }
