@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 // Edit this to your name, or set VITE_CANDIDATE_NAME in your .env
-const CANDIDATE_NAME = import.meta.env.VITE_CANDIDATE_NAME || 'Pratyush'
+const CANDIDATE_NAME = import.meta.env.VITE_CANDIDATE_NAME || 'Anmol Singh'
 
 const STARTER_PROMPTS = [
   'What projects have you worked on?',
