@@ -1,22 +1,36 @@
 from fastapi import FastAPI
-import os 
-from pathlib import Path 
-from dotenv import load_dotenv 
+from fastapi.middleware.cors import CORSMiddleware
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 from groq import Groq
 from pydantic import BaseModel, Field
 import time
 from pypdf import PdfReader
-import json 
+import json
 
 load_dotenv()
 my_api_key = os.getenv("GROQ_API_KEY")
-if not my_api_key: 
+if not my_api_key:
     raise ValueError("api key not found")
 
-client = Groq(api_key = my_api_key)
+client = Groq(api_key=my_api_key)
 model = "openai/gpt-oss-120b"
 
+BASE_DIR = Path(__file__).resolve().parent
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://letshireme.vercel.app",
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class Experience(BaseModel):
     company: str | None = None
@@ -24,6 +38,7 @@ class Experience(BaseModel):
     duration: str | None = None
     description: str | None = None
     skills_used: list[str] = []
+
 
 class Resume(BaseModel):
     name: str | None = None
@@ -38,10 +53,13 @@ class Resume(BaseModel):
     projects: list[str] = []
     certifications: list[str] = []
 
+
 resume_schema = Resume.model_json_schema()
 
+
 class ChatRequest(BaseModel):
-    question : str
+    question: str
+
 
 def ask_candidate(question: str, resume: Resume):
     system_prompt = f"""
@@ -68,28 +86,23 @@ def ask_candidate(question: str, resume: Resume):
     """
 
     response = client.chat.completions.create(
-
         model=model,
-
         messages=[
-
             {
-                "role":"system",
-                "content":system_prompt
+                "role": "system",
+                "content": system_prompt
             },
-
             {
-                "role":"user",
-                "content":question
+                "role": "user",
+                "content": question
             }
-
         ]
-
     )
 
     return response.choices[0].message.content
 
-#parsing resume
+
+# parsing resume
 def parse_resume(resume_text):
     system_prompt = f"""
     You are an expert resume parser.
@@ -128,25 +141,26 @@ def parse_resume(resume_text):
 
     {resume_text}
     """
-    message_system={
-        "role" : "system",
-        "content" : system_prompt
+    message_system = {
+        "role": "system",
+        "content": system_prompt
     }
-    message_user={
-        "role" : "user",
-        "content" : user_prompt
+    message_user = {
+        "role": "user",
+        "content": user_prompt
     }
-    messages=[message_system, message_user]
-    response_format={
+    messages = [message_system, message_user]
+    response_format = {
         "type": "json_object"
     }
-    response=client.chat.completions.create(model=model, messages=messages, response_format=response_format)
+    response = client.chat.completions.create(model=model, messages=messages, response_format=response_format)
     raw_output = response.choices[0].message.content
     data = json.loads(raw_output)
     resume = Resume(**data)
     return resume
 
-#pdf extraction 
+
+# pdf extraction
 def read_pdf(file_path):
     reader = PdfReader(file_path)
     text = ""
@@ -157,23 +171,22 @@ def read_pdf(file_path):
     return text
 
 
+# Parse the resume once at startup instead of on every request.
+# This means /chat only makes one Groq call per question, not two.
+resume_global = parse_resume(read_pdf(BASE_DIR / "mine_resume.pdf"))
+
 
 @app.get("/")
 def home():
-    resume_text = read_pdf(Path("mine_resume.pdf"))
-    resume = parse_resume(resume_text)
-    print(resume.model_dump_json(indent=2))
     return {
-        "message":"resume parsed!", 
+        "message": "resume parsed!",
+        "resume": resume_global.model_dump()
     }
-    
+
+
 @app.post("/chat")
-def chat(request : ChatRequest):
-    resume_text = read_pdf(Path("mine_resume.pdf"))
-    resume = parse_resume(resume_text)
-    answer = ask_candidate(request.question,resume)
+def chat(request: ChatRequest):
+    answer = ask_candidate(request.question, resume_global)
     return {
-        "answer":answer
+        "answer": answer
     }
-    
-    
