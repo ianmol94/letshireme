@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -190,3 +191,12 @@ def chat(request: ChatRequest):
     return {
         "answer": answer
     }
+
+
+@app.get("/resume")
+def download_resume():
+    return FileResponse(
+        path=BASE_DIR / "mine_resume.pdf",
+        media_type="application/pdf",
+        filename="Anmol_Singh_Resume.pdf",
+    )
