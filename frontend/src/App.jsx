@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-const CANDIDATE_NAME = import.meta.env.VITE_CANDIDATE_NAME || 'Anmol Singh'
+const CANDIDATE_NAME = import.meta.env.VITE_CANDIDATE_NAME || 'ANMOL SINGH'
 const STORAGE_KEY = 'letshire_conversations'
 
 const STARTER_PROMPTS = [
