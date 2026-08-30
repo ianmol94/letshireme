@@ -149,6 +149,35 @@ body {
   color: #d98c6a;
 }
 
+/* ---------- Sidebar social links (GitHub / LinkedIn / LeetCode) ---------- */
+
+.sidebar-socials {
+  margin-top: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--line);
+}
+
+.sidebar.collapsed .sidebar-socials {
+  padding: 14px 0;
+  justify-content: center;
+}
+
+.sidebar-socials a {
+  display: inline-flex;
+  color: var(--ink-dim);
+  opacity: 0.85;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.sidebar-socials a:hover {
+  color: var(--gold);
+  opacity: 1;
+}
+
 .main-area {
   flex: 1;
   min-width: 0;
