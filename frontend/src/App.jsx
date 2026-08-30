@@ -269,6 +269,7 @@ export default function App() {
                 title={label}
               >
                 <Icon />
+                <span>{label}</span>
               </a>
             ))}
           </div>

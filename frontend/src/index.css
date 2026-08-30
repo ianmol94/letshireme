@@ -155,27 +155,51 @@ body {
   margin-top: auto;
   flex-shrink: 0;
   display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
   border-top: 1px solid var(--line);
 }
 
-.sidebar.collapsed .sidebar-socials {
-  padding: 14px 0;
-  justify-content: center;
+.sidebar-socials a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px;
+  border-radius: 7px;
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-size: 13px;
+  opacity: 0.9;
+  transition: color 0.15s ease, opacity 0.15s ease, background 0.15s ease;
 }
 
-.sidebar-socials a {
-  display: inline-flex;
-  color: var(--ink-dim);
-  opacity: 0.85;
-  transition: color 0.15s ease, opacity 0.15s ease;
+.sidebar-socials a svg {
+  flex-shrink: 0;
 }
 
 .sidebar-socials a:hover {
-  color: var(--gold);
+  color: var(--ink);
   opacity: 1;
+  background: var(--panel);
+}
+
+.sidebar-socials a:hover svg {
+  color: var(--gold);
+}
+
+/* Collapsed sidebar: show icons only, centered, hide label text */
+.sidebar.collapsed .sidebar-socials {
+  padding: 8px 0;
+}
+
+.sidebar.collapsed .sidebar-socials a {
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.sidebar.collapsed .sidebar-socials a span {
+  display: none;
 }
 
 .main-area {
