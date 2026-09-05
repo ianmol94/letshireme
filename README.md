@@ -8,7 +8,7 @@ Letshire is an AI-powered recruiter assistant that allows recruiters to interact
   Extracts information from PDF resumes and converts unstructured content into a structured JSON profile.
 
 - **Schema Validation**  
-  Uses Pydantic models to validate extracted resume data, including skills, experience, education, and projects.
+  Uses Pydantic models to validate extracted resume data, like skills, experience, education, and projects.
 
 - **Resume-Grounded Q&A**  
   Recruiters can ask questions about the candidate and receive answers based only on the available resume information, reducing unsupported or hallucinated claims.
